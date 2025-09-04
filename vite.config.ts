@@ -4,7 +4,7 @@ import tailwind from "tailwindcss";
 
 export default defineConfig(({ mode }) => ({
   plugins: [react()],
-  publicDir: "./static",
+  publicDir: "/public",
   base: "/",
   css: {
     postcss: {
