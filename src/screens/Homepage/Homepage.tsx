@@ -78,7 +78,6 @@ const testimonialsData = [
   },
 ];
 
-const beforeAfterDots = Array.from({ length: 13 }, (_, i) => i);
 const aboutUsDots = Array.from({ length: 4 }, (_, i) => i);
 const galleryDots = Array.from({ length: 7 }, (_, i) => i);
 const testimonialDots = Array.from({ length: 2 }, (_, i) => i);
@@ -97,69 +96,158 @@ const footerSitemap = [
   { label: "Hasil", href: "#results" },
 ];
 
+import { useState } from "react";
+import { useEffect, useRef } from "react";
+import { Menu, X } from "lucide-react";
+
 export const Homepage = (): JSX.Element => {
+  // Before and After carousel state
+  const beforeAfterImages = 11;
+  const imagesPerPage = 3;
+  const beforeAfterPages = Math.ceil(beforeAfterImages / imagesPerPage);
+
+  // Navbar mobile menu state
+  const [navOpen, setNavOpen] = useState(false);
+
+  // Navbar show/hide on scroll
+  const [showNavbar, setShowNavbar] = useState(true);
+  const lastScrollY = useRef(0);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY;
+      if (currentScrollY < 10) {
+        setShowNavbar(true);
+      } else if (currentScrollY > lastScrollY.current) {
+        setShowNavbar(false);
+      } else {
+        setShowNavbar(true);
+      }
+      lastScrollY.current = currentScrollY;
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+
   return (
     <div className="bg-white w-full overflow-y-hidden overflow-x-hidden">
       {/* Simple single container */}
         {/* Navigation */}
-        <nav className="flex w-full h-[86px] items-center gap-2 md:gap-8 px-4 md:px-[88px] py-2.5 fixed top-0 left-0 bg-white z-50 shadow-sm">
-          <div className="flex items-center justify-center gap-2.5 p-2.5 flex-shrink-0">
-            <img
-              className="h-[59px]"
-              alt="Golans Dental Logo"
-              src="logo/golanslogo.jpg"
-            />
-          </div>
+        <nav
+          className={`flex w-full h-[86px] items-center gap-2 md:gap-8 px-4 md:px-[88px] py-2.5 fixed top-0 left-0 bg-white z-50 shadow-sm transition-transform duration-300 ${showNavbar ? "translate-y-0" : "-translate-y-full"}`}
+        >
+            <div className="flex items-center justify-between w-full">
+            {/* Logo */}
+            <div className="flex items-center gap-2.5 p-2.5 flex-shrink-0">
+              <img
+                className="h-[59px]"
+                alt="Golans Dental Logo"
+                src="logo/golanslogo.jpg"
+              />
+            </div>
 
-          <div className="hidden md:flex items-center gap-4 flex-1">
-            {navigationItems.map((item) => (
-              <div
-                key={item.label}
-                className="flex h-[42px] items-center justify-center gap-2.5 p-2.5"
-              >
-                <a
-                  href={item.href}
-                  className="[font-family:'Poppins',Helvetica] font-semibold text-[#1e1e1e] text-base text-center tracking-[0] leading-[normal] hover:text-[#7f171e] transition-colors whitespace-nowrap"
+            {/* Desktop Navigation */}
+            <div className="hidden md:flex items-center gap-4 flex-1">
+              {navigationItems.map((item) => (
+                <div
+                  key={item.label}
+                  className="flex h-[42px] items-center justify-center gap-2.5 p-2.5"
                 >
-                  {item.label}
-                </a>
-              </div>
-            ))}
-          </div>
+                  <a
+                    href={item.href}
+                    className="[font-family:'Poppins',Helvetica] font-semibold text-[#1e1e1e] text-base text-center tracking-[0] leading-[normal] hover:text-[#7f171e] transition-colors whitespace-nowrap"
+                  >
+                    {item.label}
+                  </a>
+                </div>
+              ))}
+            </div>
 
-          <Button className="flex w-auto min-w-[180px] h-[46px] items-center justify-center gap-2.5 px-6 md:px-[50px] py-2.5 bg-[#7f171e] rounded-[70px] hover:bg-[#6d1419] transition-colors flex-shrink-0">
-            <span className="[font-family:'Poppins',Helvetica] font-normal text-white text-base text-center tracking-[0] leading-[normal]">
-              Reservasi
-            </span>
-          </Button>
+            {/* Desktop Button */}
+            <div className="hidden md:block">
+              <Button className="flex w-auto min-w-[180px] h-[46px] items-center justify-center gap-2.5 px-6 md:px-[50px] py-2.5 bg-[#7f171e] rounded-[70px] hover:bg-[#6d1419] transition-colors flex-shrink-0">
+                <span className="[font-family:'Poppins',Helvetica] font-normal text-white text-base text-center tracking-[0] leading-[normal]">
+                  Reservasi
+                </span>
+              </Button>
+            </div>
+
+            {/* Mobile Hamburger */}
+            <div className="md:hidden flex items-center">
+              <button
+                className="p-2 focus:outline-none"
+                aria-label="Open menu"
+                onClick={() => setNavOpen(!navOpen)}
+              >
+                {navOpen ? <X size={32} /> : <Menu size={32} />}
+              </button>
+            </div>
+          </div>
+          {/* Mobile Dropdown */}
+          {navOpen && (
+            <div className="absolute top-[86px] left-0 w-full bg-white shadow-lg z-50 animate-fade-in">
+              <div className="flex flex-col items-start gap-4 py-6 px-6">
+                {navigationItems.map((item) => (
+                  <a
+                    key={item.label}
+                    href={item.href}
+                    className="[font-family:'Poppins',Helvetica] font-semibold text-[#1e1e1e] text-lg text-left tracking-[0] leading-[normal] hover:text-[#7f171e] transition-colors whitespace-nowrap py-2 w-full"
+                    onClick={() => setNavOpen(false)}
+                  >
+                    {item.label}
+                  </a>
+                ))}
+                <Button className="flex w-auto min-w-[160px] h-[46px] items-center justify-start gap-2.5 px-6 py-2.5 bg-[#7f171e] rounded-[70px] hover:bg-[#6d1419] transition-colors">
+                  <span className="[font-family:'Poppins',Helvetica] font-normal text-white text-center tracking-[0] leading-[normal]">
+                    Reservasi
+                  </span>
+                </Button>
+              </div>
+            </div>
+          )}
         </nav>
 
         {/* Hero Section */}
-        <section 
-          className="w-full min-h-screen relative bg-gradient-to-r from-[#7f171e] to-[#a9636d] flex items-center pt-[86px]"
-          style={{
-            backgroundImage: "url('herobg.png')",
-            backgroundSize: "cover",
-            backgroundPosition: "center",
-            backgroundBlendMode: "overlay"
-          }}
-        >
-          <div className="w-full px-4 md:px-[88px] grid grid-cols-1 lg:grid-cols-2 gap-8 items-center max-w-7xl mx-auto">
-            <div className="text-left">
-              <h1 className="[font-family:'Poppins',Helvetica] font-semibold text-[#f3eed9] text-6xl tracking-[0] leading-tight mb-6">
+  <section className="w-full min-h-screen relative flex items-center pt-[86px] overflow-hidden">
+          {/* Background Layer */}
+          <div className="absolute inset-0 w-full h-full z-0 bg-gradient-to-r from-[#7f171e] to-[#a9636d]" aria-hidden="true" />
+          {/* Content Layer: flex-col on mobile, flex-row on md+ */}
+  <div className="relative z-20 w-full max-w-7xl mx-auto px-4 sm:px-6 md:px-12 lg:px-[88px] grid grid-cols-1 md:grid-cols-[1fr_1.3fr] gap-8 lg:gap-10 min-h-[calc(100vh-86px)]">
+  <div className="flex-1 w-full text-left pt-12 md:pt-20 lg:pt-0 flex flex-col items-start justify-center">
+              <h1 className="[font-family:'Poppins',Helvetica] font-semibold text-[#f3eed9] text-3xl sm:text-4xl md:text-5xl lg:text-6xl tracking-[0] leading-tight mb-6">
                 Smile Care for Family
               </h1>
-              <p className="[font-family:'Poppins',Helvetica] font-normal text-[#f3eed9] text-xl tracking-[0] leading-relaxed mb-8 max-w-[600px]">
-                Nikmati layanan perawatan gigi yang terbaik untuk Anda dan
-                Keluarga. Dapatkan perawatan gigi dengan harga terjangkau dan
-                berkualitas.
-              </p>
-              <Button className="flex w-auto min-w-[200px] max-w-[268px] h-[57px] items-center justify-center gap-2.5 px-6 md:px-[50px] py-2.5 bg-[#a9636d] rounded-[70px] hover:bg-[#94576b] transition-colors">
-                <span className="[font-family:'Poppins',Helvetica] font-normal text-white text-base text-center tracking-[0] leading-[normal] whitespace-nowrap">
+              <p className="[font-family:'Poppins',Helvetica] font-normal text-[#f3eed9] text-base sm:text-lg md:text-xl tracking-[0] leading-relaxed mb-8 max-w-xl">
+                  Nikmati layanan perawatan gigi yang terbaik untuk Anda dan Keluarga. Dapatkan perawatan gigi dengan harga terjangkau dan berkualitas.
+                </p>
+              <Button className="flex w-auto min-w-[160px] sm:min-w-[180px] md:min-w-[200px] max-w-[268px] h-[48px] sm:h-[52px] md:h-[57px] items-center justify-center gap-2.5 px-6 md:px-[50px] py-2.5 bg-[#a9636d] rounded-[70px] hover:bg-[#94576b] transition-colors">
+                <span className="[font-family:'Poppins',Helvetica] font-normal text-white text-base sm:text-lg text-center tracking-[0] leading-[normal] whitespace-nowrap">
                   Reservasi Sekarang
                 </span>
               </Button>
             </div>
+              {/* Child image: below text on mobile, absolutely positioned and full on desktop */}
+              {/* Desktop/tablet: absolute image on right */}
+              <div className="hidden md:block md:absolute md:top-0 md:right-0 md:w-[calc(100%*1.3/2)] md:h-full pointer-events-none md:translate-x-8" style={{overflow: 'visible'}}>
+                <img
+                  src="/child.png"
+                  alt="Hero Child"
+                  className="w-full h-full min-w-0 object-contain drop-shadow-xl"
+                  style={{ zIndex: 10 }}
+                />
+              </div>
+              {/* Mobile: image below text */}
+              <div className="block md:hidden w-full flex justify-center">
+                <div className="w-full flex justify-center overflow-x-visible">
+                  <img
+                    src="/child.png"
+                    alt="Hero Child"
+                    className="drop-shadow-xl"
+                    style={{ zIndex: 10, width: '120vw', maxWidth: 'none' }}
+                  />
+                </div>
+              </div>
           </div>
         </section>
 
@@ -281,24 +369,41 @@ export const Homepage = (): JSX.Element => {
                 </h3>
               </FadeUpOnScroll>
 
+
             <div className="relative overflow-hidden">
-                <Carousel className="w-full overflow-hidden">
-                  <CarouselContent className="ml-0">
-                    {Array.from({ length: 11 }).map((_, index) => (
-                      <CarouselItem key={index} className="px-1 sm:px-2 basis-full sm:basis-1/2 lg:basis-1/3">
-                        <div className="w-full aspect-[4/3.4] flex items-center justify-center rounded-xl shadow-xl bg-white overflow-hidden">
-                          <img
-                            className="w-full h-full object-cover"
-                            alt={`Before After ${index + 1}`}
-                            src={`beforeafter/${index + 1}.jpg`}
-                          />
-                        </div>
-                      </CarouselItem>
-                    ))}
-                  </CarouselContent>
-                  <CarouselPrevious className="absolute left-4 top-1/2 transform -translate-y-1/2" />
-                  <CarouselNext className="absolute right-4 top-1/2 transform -translate-y-1/2" />
-                </Carousel>
+              <Carousel
+                className="w-full overflow-hidden"
+                opts={{
+                  align: "start",
+                  loop: false,
+                }}
+              >
+                <CarouselContent className="ml-0">
+                  {Array.from({ length: beforeAfterImages }).map((_, index) => (
+                    <CarouselItem key={index} className="px-1 sm:px-2 basis-full sm:basis-1/2 lg:basis-1/3">
+                      <div className="w-full aspect-[4/3.4] flex items-center justify-center rounded-xl shadow-xl bg-white overflow-hidden">
+                        <img
+                          className="w-full h-full object-cover"
+                          alt={`Before After ${index + 1}`}
+                          src={`beforeafter/${index + 1}.jpg`}
+                        />
+                      </div>
+                    </CarouselItem>
+                  ))}
+                </CarouselContent>
+                <CarouselPrevious className="absolute left-4 top-1/2 transform -translate-y-1/2 w-10 h-10" />
+                <CarouselNext className="absolute right-4 top-1/2 transform -translate-y-1/2 w-10 h-10" />
+              </Carousel>
+              <div className="flex items-center justify-center gap-2 mt-4">
+                {Array.from({ length: beforeAfterPages }).map((_, idx) => (
+                  <div
+                    key={idx}
+                    className={`w-3 h-3 rounded-full transition-colors duration-200 ${
+                      idx === 0 ? "bg-[#a9636d]" : "bg-[#a9636d4c]"
+                    }`}
+                  />
+                ))}
+              </div>
             </div>
 
             <FadeUpOnScroll delay={0.4}>
@@ -534,21 +639,21 @@ export const Homepage = (): JSX.Element => {
         {/* Gallery Section */}
         <FadeUpOnScroll>
           <section className="w-full py-16 px-4 md:px-[88px] bg-white">
-            <div className="max-w-6xl mx-auto px-12">
+            <div className="max-w-7xl mx-auto px-12">
               <Carousel className="w-full overflow-hidden">
                 <CarouselContent className="ml-0">
-                  {Array.from({ length: 9 }).map((_, index) => (
+                  {Array.from({ length: 7 }).map((_, index) => (
                     <CarouselItem key={index} className="pr-2 md:pr-4 basis-1/2 lg:basis-1/3">
                       <img
-                        className="w-full h-64 object-cover rounded-lg shadow-md"
+                        className="w-full aspect-[1/1] object-cover rounded-lg shadow-md"
                         alt={`Gallery ${index + 1}`}
-                        src={`https://c.animaapp.com/mf5hjq8tGx6ysb/img/gallery-${index + 1}.jpg`}
+                        src={`gallery/gallery${index + 1}.jpg`}
                       />
                     </CarouselItem>
                   ))}
                 </CarouselContent>
-                <CarouselPrevious className="absolute left-4 top-1/2 transform -translate-y-1/2" />
-                <CarouselNext className="absolute right-4 top-1/2 transform -translate-y-1/2" />
+                <CarouselPrevious className="absolute ml-4 left-4 top-1/2 transform -translate-y-1/2 w-10 h-10" />
+                <CarouselNext className="absolute mr-4 right-4 top-1/2 transform -translate-y-1/2 w-10 h-10" />
               </Carousel>
 
               <div className="flex items-center gap-2 justify-center mt-6">
@@ -643,4 +748,4 @@ export const Homepage = (): JSX.Element => {
         </FadeUpOnScroll>
     </div>
   );
-};
+}
