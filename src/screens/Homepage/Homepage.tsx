@@ -210,52 +210,56 @@ export const Homepage = (): JSX.Element => {
               </SlideInFromLeft>
 
               <SlideInFromRight>
-                <div className="relative px-12">
-                <Carousel className="w-full h-[400px] bg-white overflow-hidden rounded-lg shadow-lg">
-                  <CarouselContent className="">
-                    <CarouselItem>
-                      <img
-                        className="w-full h-[400px] object-cover"
-                        alt="Clinic Interior 1"
-                        src="clinic/clinic1.png"
-                      />
-                    </CarouselItem>
-                    <CarouselItem>
-                      <img
-                        className="w-full h-[400px] object-cover"
-                        alt="Clinic Interior 2"
-                        src="clinic/clinic2.png"
-                      />
-                    </CarouselItem>
-                    <CarouselItem>
-                      <img
-                        className="w-full h-[400px] object-cover"
-                        alt="Clinic Interior 3"
-                        src="clinic/clinic3.png"
-                      />
-                    </CarouselItem>
-                    <CarouselItem>
-                      <img
-                        className="w-full h-[400px] object-cover"
-                        alt="Video Golans"
-                        src="https://c.animaapp.com/mf5hjq8tGx6ysb/img/video-golans.jpg"
-                      />
-                    </CarouselItem>
-                  </CarouselContent>
-                  <CarouselPrevious className="absolute left-2 top-1/2 transform -translate-y-1/2 w-10 h-10" />
-                  <CarouselNext className="absolute right-2 top-1/2 transform -translate-y-1/2 w-10 h-10" />
-                </Carousel>
+                <div className="relative">
+                  <Carousel className="w-full h-[400px] bg-white overflow-hidden rounded-lg shadow-lg">
+                    <CarouselContent>
+                      <CarouselItem>
+                        <img
+                          className="w-full h-[400px] object-cover"
+                          alt="Clinic Interior 1"
+                          src="clinic/clinic1.png"
+                          loading="lazy"
+                        />
+                      </CarouselItem>
+                      <CarouselItem>
+                        <img
+                          className="w-full h-[400px] object-cover"
+                          alt="Clinic Interior 2"
+                          src="clinic/clinic2.png"
+                          loading="lazy"
+                        />
+                      </CarouselItem>
+                      <CarouselItem>
+                        <img
+                          className="w-full h-[400px] object-cover"
+                          alt="Clinic Interior 3"
+                          src="clinic/clinic3.png"
+                          loading="lazy"
+                        />
+                      </CarouselItem>
+                      <CarouselItem>
+                        <img
+                          className="w-full h-[400px] object-cover"
+                          alt="Video Golans"
+                          src="https://c.animaapp.com/mf5hjq8tGx6ysb/img/video-golans.jpg"
+                          loading="lazy"
+                        />
+                      </CarouselItem>
+                    </CarouselContent>
+                    <CarouselPrevious className="absolute left-2 top-1/2 transform -translate-y-1/2 w-10 h-10" />
+                    <CarouselNext className="absolute right-2 top-1/2 transform -translate-y-1/2 w-10 h-10" />
+                  </Carousel>
 
-                <div className="flex items-center justify-center gap-2 mt-4">
-                  {aboutUsDots.map((_, index) => (
-                    <div
-                      key={index}
-                      className={`w-2 h-2 rounded-full ${
-                        index === 0 ? "bg-[#a9636d]" : "bg-[#a9636d4c]"
-                      }`}
-                    />
-                  ))}
-                </div>
+                  <div className="flex items-center justify-center gap-2 mt-4">
+                    {aboutUsDots.map((_, index) => (
+                      <div
+                        key={index}
+                        className={`w-2 h-2 rounded-full ${
+                          index === 0 ? "bg-[#a9636d]" : "bg-[#a9636d4c]"
+                        }`}
+                      />
+                    ))}
+                  </div>
                 </div>
               </SlideInFromRight>
             </div>
@@ -265,7 +269,7 @@ export const Homepage = (): JSX.Element => {
         {/* Before and After Section */}
         <FadeUpOnScroll>
           <section className="w-full py-16 bg-[#7f171e]">
-            <div className="max-w-6xl mx-auto px-4 md:px-[88px]">
+            <div className="max-w-7xl mx-auto px-4 md:px-[88px]">
               <FadeUpOnScroll delay={0.2}>
                 <h2 className="[font-family:'Poppins',Helvetica] font-semibold text-4xl text-center tracking-[0] leading-[normal] mb-4">
                   <span className="text-white">Before and </span>
@@ -277,33 +281,24 @@ export const Homepage = (): JSX.Element => {
                 </h3>
               </FadeUpOnScroll>
 
-            <div className="relative overflow-hidden px-12">
-              <Carousel className="w-full overflow-hidden">
-                <CarouselContent className="ml-0">
-                  {Array.from({ length: 15 }).map((_, index) => (
-                    <CarouselItem key={index} className="pr-2 md:pr-4 basis-1/2 md:basis-1/3 lg:basis-1/4">
-                      <img
-                        className="w-full h-64 object-cover rounded-lg"
-                        alt={`Before After ${index + 1}`}
-                        src={`https://c.animaapp.com/mf5hjq8tGx6ysb/img/before-after-${index + 1}.jpg`}
-                      />
-                    </CarouselItem>
-                  ))}
-                </CarouselContent>
-                <CarouselPrevious className="absolute left-4 top-1/2 transform -translate-y-1/2" />
-                <CarouselNext className="absolute right-4 top-1/2 transform -translate-y-1/2" />
-              </Carousel>
-
-              <div className="flex items-center gap-2 justify-center mt-6">
-                {beforeAfterDots.map((_, index) => (
-                  <div
-                    key={index}
-                    className={`w-2 h-2 rounded-full ${
-                      index === 0 ? "bg-[#f3eed9]" : "bg-[#f3eed94c]"
-                    }`}
-                  />
-                ))}
-              </div>
+            <div className="relative overflow-hidden">
+                <Carousel className="w-full overflow-hidden">
+                  <CarouselContent className="ml-0">
+                    {Array.from({ length: 11 }).map((_, index) => (
+                      <CarouselItem key={index} className="px-1 sm:px-2 basis-full sm:basis-1/2 lg:basis-1/3">
+                        <div className="w-full aspect-[4/3.4] flex items-center justify-center rounded-xl shadow-xl bg-white overflow-hidden">
+                          <img
+                            className="w-full h-full object-cover"
+                            alt={`Before After ${index + 1}`}
+                            src={`beforeafter/${index + 1}.jpg`}
+                          />
+                        </div>
+                      </CarouselItem>
+                    ))}
+                  </CarouselContent>
+                  <CarouselPrevious className="absolute left-4 top-1/2 transform -translate-y-1/2" />
+                  <CarouselNext className="absolute right-4 top-1/2 transform -translate-y-1/2" />
+                </Carousel>
             </div>
 
             <FadeUpOnScroll delay={0.4}>
@@ -349,7 +344,7 @@ export const Homepage = (): JSX.Element => {
                     <img
                       className="w-16 h-16 rounded-full"
                       alt="Golans Dental Logo"
-                      src="https://c.animaapp.com/mf5hjq8tGx6ysb/img/golans-dental-logo-small.png"
+                      src="logo/golanslogo.jpg"
                     />
                     <div>
                       <h3 className="[font-family:'Poppins',Helvetica] font-semibold text-black text-xl tracking-[0] leading-[normal]">
@@ -523,7 +518,7 @@ export const Homepage = (): JSX.Element => {
                       <img
                         className="w-32 h-32 rounded-full mb-4 object-cover"
                         alt={`Dr. ${doctor.name}`}
-                        src={`https://c.animaapp.com/mf5hjq8tGx6ysb/img/doctor-${index + 1}.jpg`}
+                        src={`doctor/doctor${index + 1}.jpg`}
                       />
                       <p className="[font-family:'Poppins',Helvetica] font-normal text-[#f3eed9] text-sm text-center tracking-[0] leading-[normal]">
                         {doctor.name}
@@ -579,9 +574,9 @@ export const Homepage = (): JSX.Element => {
                 <StaggerItem className="lg:col-span-2">
                   <div>
                     <img
-                      className="w-24 h-24 mb-6"
+                      className="w-24 h-24 mb-6 rounded-full object-cover"
                       alt="Golans Dental Logo"
-                      src="https://c.animaapp.com/mf5hjq8tGx6ysb/img/golans-dental-logo-footer.png"
+                      src="logo/golanslogo.jpg"
                     />
                     <h3 className="[font-family:'Poppins',Helvetica] font-semibold text-[#f3eed9] text-xl tracking-[0] leading-[normal] mb-4">
                       Lokasi
